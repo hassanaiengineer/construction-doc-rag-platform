@@ -71,16 +71,10 @@ Because this project uses a decoupled architecture, you need to run both the bac
 
 Open a terminal and run:
 ```bash
-python main.py
+python run.py
 ```
 *The API will start on `http://localhost:8000`. You can view the API documentation at `http://localhost:8000/docs`.*
 
-### 2. Start the Streamlit Frontend
-
-Open a **new** terminal window and run:
-```bash
-streamlit run app.py
-```
 *The UI will open in your default browser at `http://localhost:8501`.*
 
 ## 📁 Project Structure
