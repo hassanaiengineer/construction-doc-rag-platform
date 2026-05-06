@@ -3,10 +3,10 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from construction_rag.core.config import Settings
-from construction_rag.services.ocr.google_vision import GoogleVisionOcr
-from construction_rag.services.ocr.models import PageText
-from construction_rag.services.ocr.pdf_text import PdfTextExtractor
+from rag_pipeline.core.config import Settings
+from rag_pipeline.services.ocr.google_vision import GoogleVisionOcr
+from rag_pipeline.services.ocr.models import PageText
+from rag_pipeline.services.ocr.pdf_text import PdfTextExtractor
 
 logger = logging.getLogger(__name__)
 

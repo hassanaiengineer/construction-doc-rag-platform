@@ -1,4 +1,4 @@
-from construction_rag.services.embeddings.chunking import Chunker
+from rag_pipeline.services.embeddings.chunking import Chunker
 
 
 def test_chunker_produces_stable_ids_and_overlap():

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from openai import AsyncOpenAI
 
-from construction_rag.core.errors import ConfigError
-from construction_rag.services.llm.base import ChatMessage, LlmClient, LlmResult
+from rag_pipeline.core.errors import ConfigError
+from rag_pipeline.services.llm.base import ChatMessage, LlmClient, LlmResult
 
 
 class OpenAiClient(LlmClient):

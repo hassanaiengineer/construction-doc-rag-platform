@@ -8,7 +8,7 @@ from pathlib import Path
 import faiss
 import numpy as np
 
-from construction_rag.services.embeddings.chunking import Chunk
+from rag_pipeline.services.embeddings.chunking import Chunk
 
 logger = logging.getLogger(__name__)
 

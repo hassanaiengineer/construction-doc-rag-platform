@@ -2,8 +2,8 @@ from pathlib import Path
 
 import numpy as np
 
-from construction_rag.services.embeddings.chunking import Chunk
-from construction_rag.services.embeddings.faiss_store import FaissVectorStore
+from rag_pipeline.services.embeddings.chunking import Chunk
+from rag_pipeline.services.embeddings.faiss_store import FaissVectorStore
 
 
 def test_faiss_store_build_and_search(tmp_path: Path):

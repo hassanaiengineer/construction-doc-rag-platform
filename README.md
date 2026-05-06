@@ -30,7 +30,7 @@ cp .env.example .env
 
 Run API:
 ```bash
-uvicorn construction_rag.api.main:app --host 0.0.0.0 --port 8000
+uvicorn rag_pipeline.api.main:app --host 0.0.0.0 --port 8000
 ```
 
 API docs:
@@ -67,7 +67,7 @@ streamlit run frontend/streamlit_app.py
 
 ## Repository layout
 
-- `construction_rag/` – application package (API, services, DB, core)
+- `rag_pipeline/` – application package (API, services, DB, core)
 - `frontend/` – optional Streamlit UI
 - `docker/` – Dockerfile + compose
 - `requirements/` – dependency groups

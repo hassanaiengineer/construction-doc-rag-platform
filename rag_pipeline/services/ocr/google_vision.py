@@ -8,8 +8,8 @@ from pathlib import Path
 from google.cloud import vision
 from pdf2image import convert_from_path
 
-from construction_rag.core.errors import ConfigError, ProcessingError
-from construction_rag.services.ocr.models import PageText
+from rag_pipeline.core.errors import ConfigError, ProcessingError
+from rag_pipeline.services.ocr.models import PageText
 
 logger = logging.getLogger(__name__)
 

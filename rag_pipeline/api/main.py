@@ -8,13 +8,13 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from construction_rag.api.routes import admin, documents, queries
-from construction_rag.core.config import get_settings
-from construction_rag.core.errors import AppError
-from construction_rag.core.logging import configure_logging
-from construction_rag.core.paths import StoragePaths
-from construction_rag.db.base import Base
-from construction_rag.db.session import create_engine, create_session_factory
+from rag_pipeline.api.routes import admin, documents, queries
+from rag_pipeline.core.config import get_settings
+from rag_pipeline.core.errors import AppError
+from rag_pipeline.core.logging import configure_logging
+from rag_pipeline.core.paths import StoragePaths
+from rag_pipeline.db.base import Base
+from rag_pipeline.db.session import create_engine, create_session_factory
 
 logger = logging.getLogger(__name__)
 

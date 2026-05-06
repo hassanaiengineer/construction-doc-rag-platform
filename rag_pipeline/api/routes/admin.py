@@ -10,12 +10,12 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from construction_rag.api.deps import get_db_session, get_paths, get_settings
-from construction_rag.core.config import Settings
-from construction_rag.core.paths import StoragePaths
-from construction_rag.db.models import ChatMessage, Document, DocumentStatus
+from rag_pipeline.api.deps import get_db_session, get_paths, get_settings
+from rag_pipeline.core.config import Settings
+from rag_pipeline.core.paths import StoragePaths
+from rag_pipeline.db.models import ChatMessage, Document, DocumentStatus
 
-from construction_rag.api.schemas.admin import HealthOut
+from rag_pipeline.api.schemas.admin import HealthOut
 
 router = APIRouter()
 

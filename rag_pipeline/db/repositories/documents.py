@@ -6,7 +6,7 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from construction_rag.db.models import Document, DocumentStatus
+from rag_pipeline.db.models import Document, DocumentStatus
 
 
 class DocumentRepository:

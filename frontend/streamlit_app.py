@@ -132,7 +132,7 @@ with st.sidebar:
         st.success("Backend connected")
     else:
         st.warning("Backend offline")
-        st.code("uvicorn construction_rag.api.main:app --host 0.0.0.0 --port 8000")
+        st.code("uvicorn rag_pipeline.api.main:app --host 0.0.0.0 --port 8000")
         if st.button("Retry connection", use_container_width=True):
             st.rerun()
 
@@ -168,7 +168,7 @@ with tab_upload:
 
             if not backend_ok:
                 st.warning("Backend offline. Start the API to enable uploads.")
-                st.code("uvicorn construction_rag.api.main:app --host 0.0.0.0 --port 8000")
+                st.code("uvicorn rag_pipeline.api.main:app --host 0.0.0.0 --port 8000")
                 uploaded = st.file_uploader("PDF", type=["pdf"], disabled=True)
                 st.button("Upload & Process", type="primary", disabled=True)
             else:
@@ -243,7 +243,7 @@ with tab_chat:
     if not backend_ok:
         with st.container(border=True):
             st.warning("Backend offline. Start the API to enable chat.")
-            st.code("uvicorn construction_rag.api.main:app --host 0.0.0.0 --port 8000")
+            st.code("uvicorn rag_pipeline.api.main:app --host 0.0.0.0 --port 8000")
         st.stop()
 
     docs = list_documents()

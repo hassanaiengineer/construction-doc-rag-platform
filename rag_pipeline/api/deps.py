@@ -5,8 +5,8 @@ from collections.abc import AsyncIterator
 from fastapi import Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from construction_rag.core.config import Settings
-from construction_rag.core.paths import StoragePaths
+from rag_pipeline.core.config import Settings
+from rag_pipeline.core.paths import StoragePaths
 
 
 def get_settings(request: Request) -> Settings:

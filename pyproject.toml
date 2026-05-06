@@ -13,7 +13,7 @@ authors = [{ name = "Hassan Khan" }]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["construction_rag*"]
+include = ["rag_pipeline*"]
 
 [tool.ruff]
 line-length = 100

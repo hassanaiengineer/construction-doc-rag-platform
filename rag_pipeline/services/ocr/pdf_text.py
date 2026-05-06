@@ -5,7 +5,7 @@ from pathlib import Path
 
 import fitz  # PyMuPDF
 
-from construction_rag.services.ocr.models import PageText
+from rag_pipeline.services.ocr.models import PageText
 
 logger = logging.getLogger(__name__)
 

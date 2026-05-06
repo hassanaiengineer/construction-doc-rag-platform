@@ -8,7 +8,7 @@ from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.sqlite import JSON as SQLiteJSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from construction_rag.db.base import Base
+from rag_pipeline.db.base import Base
 
 
 class DocumentStatus(str, enum.Enum):

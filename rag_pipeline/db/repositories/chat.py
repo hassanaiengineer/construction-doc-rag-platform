@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from construction_rag.db.models import ChatMessage
+from rag_pipeline.db.models import ChatMessage
 
 
 class ChatRepository:

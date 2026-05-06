@@ -4,11 +4,11 @@ import logging
 from dataclasses import dataclass
 from typing import Any
 
-from construction_rag.core.config import Settings
-from construction_rag.services.embeddings.faiss_store import RetrievedChunk
-from construction_rag.services.embeddings.reranker import Bm25Reranker
-from construction_rag.services.llm.base import ChatMessage, LlmClient
-from construction_rag.services.rag.prompts import SYSTEM_PROMPT, build_user_prompt
+from rag_pipeline.core.config import Settings
+from rag_pipeline.services.embeddings.faiss_store import RetrievedChunk
+from rag_pipeline.services.embeddings.reranker import Bm25Reranker
+from rag_pipeline.services.llm.base import ChatMessage, LlmClient
+from rag_pipeline.services.rag.prompts import SYSTEM_PROMPT, build_user_prompt
 
 logger = logging.getLogger(__name__)
 

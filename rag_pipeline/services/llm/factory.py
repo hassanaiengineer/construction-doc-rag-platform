@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from construction_rag.core.config import Settings
-from construction_rag.services.llm.anthropic_client import AnthropicClient
-from construction_rag.services.llm.base import LlmClient
-from construction_rag.services.llm.openai_client import OpenAiClient
+from rag_pipeline.core.config import Settings
+from rag_pipeline.services.llm.anthropic_client import AnthropicClient
+from rag_pipeline.services.llm.base import LlmClient
+from rag_pipeline.services.llm.openai_client import OpenAiClient
 
 
 def build_llm_client(settings: Settings) -> LlmClient:

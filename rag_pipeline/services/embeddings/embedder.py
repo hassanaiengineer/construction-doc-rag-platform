@@ -4,7 +4,7 @@ import numpy as np
 from openai import AsyncOpenAI
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-from construction_rag.core.errors import ConfigError
+from rag_pipeline.core.errors import ConfigError
 
 
 def _l2_normalize(matrix: np.ndarray) -> np.ndarray:

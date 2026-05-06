@@ -9,19 +9,19 @@ import anyio
 from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from construction_rag.api.deps import get_db_session, get_paths, get_settings
-from construction_rag.api.schemas.documents import (
+from rag_pipeline.api.deps import get_db_session, get_paths, get_settings
+from rag_pipeline.api.schemas.documents import (
     DocumentListOut,
     DocumentOut,
     DocumentStatusOut,
     UploadResponse,
 )
-from construction_rag.core.config import Settings
-from construction_rag.core.errors import NotFoundError
-from construction_rag.core.paths import StoragePaths
-from construction_rag.db.models import DocumentStatus
-from construction_rag.db.repositories.documents import DocumentRepository
-from construction_rag.services.documents.ingestion import DocumentIngestionService
+from rag_pipeline.core.config import Settings
+from rag_pipeline.core.errors import NotFoundError
+from rag_pipeline.core.paths import StoragePaths
+from rag_pipeline.db.models import DocumentStatus
+from rag_pipeline.db.repositories.documents import DocumentRepository
+from rag_pipeline.services.documents.ingestion import DocumentIngestionService
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

@@ -7,17 +7,17 @@ import anyio
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from construction_rag.api.deps import get_db_session, get_settings
-from construction_rag.api.schemas.queries import ChatHistoryOut, ChatMessageOut, QueryRequest, QueryResponse
-from construction_rag.core.config import Settings
-from construction_rag.core.errors import NotFoundError, ProcessingError
-from construction_rag.db.models import DocumentStatus
-from construction_rag.db.repositories.chat import ChatRepository
-from construction_rag.db.repositories.documents import DocumentRepository
-from construction_rag.services.embeddings.embedder import Embedder
-from construction_rag.services.embeddings.faiss_store import FaissVectorStore
-from construction_rag.services.llm.factory import build_llm_client
-from construction_rag.services.rag.pipeline import RagPipeline
+from rag_pipeline.api.deps import get_db_session, get_settings
+from rag_pipeline.api.schemas.queries import ChatHistoryOut, ChatMessageOut, QueryRequest, QueryResponse
+from rag_pipeline.core.config import Settings
+from rag_pipeline.core.errors import NotFoundError, ProcessingError
+from rag_pipeline.db.models import DocumentStatus
+from rag_pipeline.db.repositories.chat import ChatRepository
+from rag_pipeline.db.repositories.documents import DocumentRepository
+from rag_pipeline.services.embeddings.embedder import Embedder
+from rag_pipeline.services.embeddings.faiss_store import FaissVectorStore
+from rag_pipeline.services.llm.factory import build_llm_client
+from rag_pipeline.services.rag.pipeline import RagPipeline
 
 router = APIRouter()
 

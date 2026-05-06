@@ -6,13 +6,13 @@ from pathlib import Path
 
 import anyio
 
-from construction_rag.core.config import Settings
-from construction_rag.core.errors import ProcessingError
-from construction_rag.core.paths import StoragePaths
-from construction_rag.services.embeddings.chunking import Chunker
-from construction_rag.services.embeddings.embedder import Embedder
-from construction_rag.services.embeddings.faiss_store import FaissVectorStore
-from construction_rag.services.ocr.service import OcrService
+from rag_pipeline.core.config import Settings
+from rag_pipeline.core.errors import ProcessingError
+from rag_pipeline.core.paths import StoragePaths
+from rag_pipeline.services.embeddings.chunking import Chunker
+from rag_pipeline.services.embeddings.embedder import Embedder
+from rag_pipeline.services.embeddings.faiss_store import FaissVectorStore
+from rag_pipeline.services.ocr.service import OcrService
 
 logger = logging.getLogger(__name__)
 
