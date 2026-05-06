@@ -1,31 +1,45 @@
 from __future__ import annotations
 
-from functools import lru_cache
-from typing import Iterable
-
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from openai import AsyncOpenAI
+from tenacity import retry, stop_after_attempt, wait_exponential
+
+from construction_rag.core.errors import ConfigError
 
 
-@lru_cache(maxsize=4)
-def _load_model(model_name: str) -> SentenceTransformer:
-    return SentenceTransformer(model_name)
+def _l2_normalize(matrix: np.ndarray) -> np.ndarray:
+    norms = np.linalg.norm(matrix, axis=1, keepdims=True)
+    norms[norms == 0] = 1.0
+    return matrix / norms
 
 
 class Embedder:
-    def __init__(self, model_name: str):
-        self._model_name = model_name
+    """
+    OpenAI embeddings client.
+
+    Uses cosine similarity via FAISS IP index by L2-normalizing vectors.
+    """
+
+    def __init__(self, *, api_key: str, model: str):
+        if not api_key:
+            raise ConfigError("OPENAI_API_KEY is required to generate embeddings.")
+        if not model:
+            raise ConfigError("EMBEDDING_MODEL must be set.")
+        self._client = AsyncOpenAI(api_key=api_key)
+        self._model = model
 
     @property
-    def model_name(self) -> str:
-        return self._model_name
+    def model(self) -> str:
+        return self._model
 
-    def embed_texts(self, texts: Iterable[str]) -> np.ndarray:
-        model = _load_model(self._model_name)
-        embeddings = model.encode(list(texts), normalize_embeddings=True, show_progress_bar=False)
-        return np.asarray(embeddings, dtype=np.float32)
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=0.5, min=0.5, max=4))
+    async def embed_texts(self, texts: list[str]) -> np.ndarray:
+        resp = await self._client.embeddings.create(model=self._model, input=texts)
+        vectors = [d.embedding for d in resp.data]
+        arr = np.asarray(vectors, dtype=np.float32)
+        return _l2_normalize(arr)
 
-    def embed_query(self, text: str) -> np.ndarray:
-        vec = self.embed_texts([text])
-        return vec[0]
+    async def embed_query(self, text: str) -> np.ndarray:
+        arr = await self.embed_texts([text])
+        return arr[0]
 

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
-from functools import lru_cache
 
-from sentence_transformers import CrossEncoder
+from rank_bm25 import BM25Okapi
 
 
 @dataclass(frozen=True, slots=True)
@@ -12,18 +12,18 @@ class RerankedItem:
     score: float
 
 
-@lru_cache(maxsize=2)
-def _load_cross_encoder(model_name: str) -> CrossEncoder:
-    return CrossEncoder(model_name)
+_token_re = re.compile(r"[A-Za-z0-9_]+")
 
 
-class Reranker:
-    def __init__(self, model_name: str):
-        self._model_name = model_name
+def _tokenize(text: str) -> list[str]:
+    return [m.group(0).lower() for m in _token_re.finditer(text)]
 
+
+class Bm25Reranker:
     def rerank(self, *, query: str, passages: list[str]) -> list[RerankedItem]:
-        model = _load_cross_encoder(self._model_name)
-        scores = model.predict([(query, p) for p in passages], show_progress_bar=False)
+        tokenized = [_tokenize(p) for p in passages]
+        bm25 = BM25Okapi(tokenized)
+        scores = bm25.get_scores(_tokenize(query))
         return sorted(
             (RerankedItem(index=i, score=float(s)) for i, s in enumerate(scores)),
             key=lambda x: x.score,

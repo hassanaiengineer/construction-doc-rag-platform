@@ -23,7 +23,8 @@ class DocumentIngestionService:
         self._paths = paths
         self._ocr = OcrService(settings)
         self._chunker = Chunker()
-        self._embedder = Embedder(settings.embedding_model)
+        openai_key = settings.openai_api_key.get_secret_value() if settings.openai_api_key else ""
+        self._embedder = Embedder(api_key=openai_key, model=settings.embedding_model)
 
     def _write_outputs(
         self,
@@ -41,14 +42,15 @@ class DocumentIngestionService:
                 f.write(p["text"])
         return structured_path, extracted_path
 
-    def _build_index(self, *, document_id: str, pages: list[dict]) -> tuple[Path, int]:
+    def _build_chunks(self, *, pages: list[dict]):
         chunks = []
         for p in pages:
             chunks.extend(self._chunker.chunk_page(page_number=int(p["page_number"]), text=p["text"]))
         if not chunks:
             raise ProcessingError("No text chunks could be created from the document.")
+        return chunks
 
-        embeddings = self._embedder.embed_texts([c.text for c in chunks])
+    def _persist_index(self, *, document_id: str, embeddings, chunks) -> tuple[Path, int]:
         index_dir = self._paths.indexes_dir / document_id
         store = FaissVectorStore(index_dir)
         store.build(embeddings=embeddings, chunks=chunks)
@@ -67,8 +69,10 @@ class DocumentIngestionService:
 
         pages = await anyio.to_thread.run_sync(run_ocr_sync)
         structured_path, extracted_path = self._write_outputs(document_id=document_id, pages=pages)
+        chunks = self._build_chunks(pages=pages)
+        embeddings = await self._embedder.embed_texts([c.text for c in chunks])
         index_dir, chunk_count = await anyio.to_thread.run_sync(
-            lambda: self._build_index(document_id=document_id, pages=pages)
+            lambda: self._persist_index(document_id=document_id, embeddings=embeddings, chunks=chunks)
         )
 
         return {
@@ -78,4 +82,3 @@ class DocumentIngestionService:
             "extracted_text_path": str(extracted_path),
             "index_dir": str(index_dir),
         }
-

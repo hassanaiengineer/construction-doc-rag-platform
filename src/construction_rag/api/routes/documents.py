@@ -5,6 +5,7 @@ import secrets
 from datetime import datetime
 from pathlib import Path
 
+import anyio
 from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -44,8 +45,12 @@ async def upload_document(
 
     document_id = _new_document_id()
     upload_path = paths.uploads_dir / f"{document_id}.pdf"
-    content = await file.read()
-    upload_path.write_bytes(content)
+    async with await anyio.open_file(upload_path, "wb") as out:
+        while True:
+            chunk = await file.read(1024 * 1024)
+            if not chunk:
+                break
+            await out.write(chunk)
 
     repo = DocumentRepository(session)
     await repo.create(

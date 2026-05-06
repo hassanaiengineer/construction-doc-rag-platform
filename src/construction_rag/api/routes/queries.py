@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from pathlib import Path
 
+import anyio
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -40,14 +41,20 @@ async def query_document(
     llm = build_llm_client(settings)
     pipeline = RagPipeline(settings=settings, llm=llm)
 
-    embedder = Embedder(settings.embedding_model)
-    store = FaissVectorStore(Path(doc.index_dir))
-    search_k = req.top_k if not settings.rerank_model else max(req.top_k, settings.rerank_top_n)
-    retrieved = store.search(query_embedding=embedder.embed_query(req.question), top_k=search_k)
-    if req.page_numbers:
-        allowed = set(req.page_numbers)
-        retrieved = [r for r in retrieved if r.page_number in allowed]
-    retrieved = pipeline.rerank_if_enabled(query=req.question, items=retrieved, top_k=req.top_k)
+    openai_key = settings.openai_api_key.get_secret_value() if settings.openai_api_key else ""
+    embedder = Embedder(api_key=openai_key, model=settings.embedding_model)
+    query_embedding = await embedder.embed_query(req.question)
+
+    def retrieve_sync():
+        store = FaissVectorStore(Path(doc.index_dir))
+        search_k = req.top_k if settings.rerank_mode == "off" else max(req.top_k, settings.rerank_top_n)
+        items = store.search(query_embedding=query_embedding, top_k=search_k)
+        if req.page_numbers:
+            allowed = set(req.page_numbers)
+            items = [r for r in items if r.page_number in allowed]
+        return pipeline.rerank_if_enabled(query=req.question, items=items, top_k=req.top_k)
+
+    retrieved = await anyio.to_thread.run_sync(retrieve_sync)
 
     answer = await pipeline.answer(question=req.question, retrieved=retrieved, max_tokens=req.max_tokens)
 

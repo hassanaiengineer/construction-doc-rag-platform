@@ -5,9 +5,8 @@ from dataclasses import dataclass
 from typing import Any
 
 from construction_rag.core.config import Settings
-from construction_rag.services.embeddings.embedder import Embedder
 from construction_rag.services.embeddings.faiss_store import RetrievedChunk
-from construction_rag.services.embeddings.reranker import Reranker
+from construction_rag.services.embeddings.reranker import Bm25Reranker
 from construction_rag.services.llm.base import ChatMessage, LlmClient
 from construction_rag.services.rag.prompts import SYSTEM_PROMPT, build_user_prompt
 
@@ -26,8 +25,7 @@ class RagPipeline:
     def __init__(self, *, settings: Settings, llm: LlmClient):
         self._settings = settings
         self._llm = llm
-        self._embedder = Embedder(settings.embedding_model)
-        self._reranker = Reranker(settings.rerank_model) if settings.rerank_model else None
+        self._reranker = Bm25Reranker() if settings.rerank_mode == "bm25" else None
 
     def rerank_if_enabled(self, *, query: str, items: list[RetrievedChunk], top_k: int) -> list[RetrievedChunk]:
         if not items:
@@ -71,4 +69,3 @@ class RagPipeline:
             input_tokens=result.input_tokens,
             output_tokens=result.output_tokens,
         )
-

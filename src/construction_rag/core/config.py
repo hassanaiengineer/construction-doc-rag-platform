@@ -29,10 +29,8 @@ class Settings(BaseSettings):
     )
 
     # Retrieval
-    embedding_model: str = Field(
-        default="sentence-transformers/all-MiniLM-L6-v2", alias="EMBEDDING_MODEL"
-    )
-    rerank_model: str | None = Field(default=None, alias="RERANK_MODEL")
+    embedding_model: str = Field(default="text-embedding-3-small", alias="EMBEDDING_MODEL")
+    rerank_mode: Literal["off", "bm25"] = Field(default="bm25", alias="RERANK_MODE")
     top_k_default: int = Field(default=6, alias="TOP_K_DEFAULT")
     rerank_top_n: int = Field(default=20, alias="RERANK_TOP_N")
 

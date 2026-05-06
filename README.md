@@ -24,6 +24,7 @@ Install:
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
+pip install -e .
 cp .env.example .env
 ```
 
@@ -45,6 +46,12 @@ API docs:
 To enable Google Vision OCR:
 - Set `GOOGLE_APPLICATION_CREDENTIALS` to a service account JSON path.
 
+## Embeddings configuration
+
+This backend uses OpenAI embeddings (FAISS index over normalized vectors).
+- Set `OPENAI_API_KEY`
+- Choose `EMBEDDING_MODEL` (default: `text-embedding-3-small`)
+
 ## Docker
 
 ```bash
@@ -64,4 +71,3 @@ streamlit run frontend/streamlit_app.py
 - `frontend/` – optional Streamlit UI
 - `docker/` – Dockerfile + compose
 - `requirements/` – dependency groups
-

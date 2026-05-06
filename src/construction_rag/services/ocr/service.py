@@ -17,7 +17,9 @@ class OcrService:
         self._text_extractor = PdfTextExtractor()
         self._google_ocr: GoogleVisionOcr | None = None
 
-        if settings.ocr_mode in {"auto", "google_vision"}:
+        if settings.ocr_mode == "google_vision":
+            self._google_ocr = GoogleVisionOcr(credentials_path=settings.google_application_credentials)
+        elif settings.ocr_mode == "auto" and settings.google_application_credentials:
             self._google_ocr = GoogleVisionOcr(credentials_path=settings.google_application_credentials)
 
     def extract_pages(self, pdf_path: Path) -> list[PageText]:
@@ -41,4 +43,3 @@ class OcrService:
 
         logger.info("OCR auto mode: falling back to Google Vision (empty_ratio=%.2f)", ratio_empty)
         return self._google_ocr.extract(pdf_path)
-
