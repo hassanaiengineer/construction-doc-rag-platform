@@ -1,9 +1,20 @@
 .env
-mid-construction-web-app-*.json
+.env.*
+!.env.example
+
 __pycache__/
-Uploads/
-Pages/
-Sample Text/
-Structured Text/
-Embeddings/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+.venv/
 venv/
+
+# Local app data
+data/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
