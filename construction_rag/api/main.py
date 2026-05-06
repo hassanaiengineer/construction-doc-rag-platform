@@ -3,12 +3,10 @@ from __future__ import annotations
 import logging
 from contextlib import asynccontextmanager
 
+import asyncio
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-import asyncio
-
-from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from construction_rag.api.routes import admin, documents, queries
 from construction_rag.core.config import get_settings
