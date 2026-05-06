@@ -2,9 +2,14 @@ from __future__ import annotations
 
 import os
 import time
+from datetime import datetime
+from typing import Any
 
 import requests
 import streamlit as st
+
+
+APP_NAME = "Construction Document RAG"
 
 
 def _get_api_base_url() -> str:
@@ -17,7 +22,13 @@ def _get_api_base_url() -> str:
 
 API_BASE_URL = _get_api_base_url()
 
-st.set_page_config(page_title="Construction Document RAG", layout="wide")
+st.set_page_config(page_title=APP_NAME, page_icon="🧠", layout="wide")
+
+
+def load_css() -> None:
+    css_path = os.path.join(os.path.dirname(__file__), "ui", "styles.css")
+    with open(css_path, "r", encoding="utf-8") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
 def api_get(path: str):
@@ -53,83 +64,7 @@ def backend_health() -> bool:
         return False
 
 
-st.markdown(
-    """
-    <style>
-      :root {
-        --rag-border: rgba(148,163,184,0.14);
-        --rag-card: rgba(15,23,42,0.52);
-        --rag-card-2: rgba(15,23,42,0.34);
-        --rag-text: rgba(226,232,240,0.92);
-        --rag-muted: rgba(226,232,240,0.72);
-        --rag-accent: rgba(124,58,237,0.35);
-        --rag-accent-2: rgba(16,185,129,0.22);
-      }
-
-      html, body, [class*="css"]  { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif; }
-
-      .block-container { padding-top: 1.25rem; padding-bottom: 2rem; }
-      section[data-testid="stSidebar"] { border-right: 1px solid var(--rag-border); }
-
-      #MainMenu, footer { visibility: hidden; }
-
-      .rag-shell {
-        background:
-          radial-gradient(900px 400px at 10% 0%, rgba(124,58,237,0.18), transparent 60%),
-          radial-gradient(900px 400px at 90% 0%, rgba(16,185,129,0.14), transparent 60%);
-        border: 1px solid var(--rag-border);
-        border-radius: 16px;
-        padding: 1.25rem 1.25rem;
-        margin-bottom: 1rem;
-      }
-
-      .rag-title {
-        margin: 0;
-        font-size: 1.55rem;
-        font-weight: 650;
-        letter-spacing: -0.02em;
-      }
-      .rag-subtitle { margin: 0.35rem 0 0; color: var(--rag-muted); font-size: 0.98rem; }
-
-      .rag-pills { margin-top: 0.85rem; display: flex; gap: 0.45rem; flex-wrap: wrap; }
-      .rag-pill {
-        padding: 0.22rem 0.55rem;
-        border-radius: 999px;
-        font-size: 0.82rem;
-        border: 1px solid var(--rag-border);
-        background: rgba(2,6,23,0.20);
-        color: var(--rag-text);
-        backdrop-filter: blur(10px);
-      }
-
-      .rag-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 0.9rem; align-items: stretch; margin-top: 0.9rem; }
-      .rag-panel {
-        border: 1px solid var(--rag-border);
-        border-radius: 14px;
-        background: var(--rag-card);
-        padding: 0.95rem 1rem;
-      }
-      .rag-panel h3 { margin: 0; font-size: 0.9rem; font-weight: 650; color: var(--rag-muted); text-transform: uppercase; letter-spacing: .06em; }
-      .rag-panel .kpi { margin-top: 0.4rem; font-size: 1.15rem; font-weight: 650; }
-      .rag-panel .hint { margin-top: 0.35rem; color: var(--rag-muted); font-size: 0.9rem; }
-
-      .rag-credit { margin-top: 0.75rem; color: var(--rag-text); font-size: 0.95rem; }
-      .rag-credit b { font-weight: 650; }
-
-      .rag-card {
-        border: 1px solid var(--rag-border);
-        border-radius: 14px;
-        padding: 0.95rem 1rem;
-        background: var(--rag-card-2);
-      }
-
-      /* Make default Streamlit headers less heavy */
-      h2, h3 { font-weight: 650 !important; letter-spacing: -0.01em; }
-      h2 { font-size: 1.15rem !important; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+load_css()
 
 backend_ok = backend_health()
 doc_count = 0
@@ -142,44 +77,51 @@ if backend_ok:
 st.markdown(
     f"""
     <div class="rag-shell">
-      <div>
-        <div class="rag-title">Construction Document RAG</div>
-        <div class="rag-subtitle">Document intelligence for construction/architecture: extraction, retrieval, and cited answers.</div>
-        <div class="rag-pills">
-          <span class="rag-pill">FastAPI</span>
-          <span class="rag-pill">FAISS</span>
-          <span class="rag-pill">OCR</span>
-          <span class="rag-pill">Citations</span>
-        </div>
-        <div class="rag-grid">
-          <div class="rag-panel">
-            <h3>Workspace</h3>
-            <div class="kpi">{doc_count} documents</div>
-            <div class="hint">Upload a PDF, wait for ingestion, then query with citations.</div>
-          </div>
-          <div class="rag-panel">
-            <h3>Backend</h3>
-            <div class="kpi">{'Connected' if backend_ok else 'Offline'}</div>
-            <div class="hint">{API_BASE_URL}</div>
-          </div>
-        </div>
-        <div class="rag-credit"><b>Built by Hassan Khan</b></div>
+      <div class="rag-title">{APP_NAME}</div>
+      <div class="rag-subtitle">
+        Premium document intelligence for architecture & construction: extraction, retrieval, and cited answers.
       </div>
+      <div class="rag-pills">
+        <span class="rag-pill">Workspace</span>
+        <span class="rag-pill">Ingestion</span>
+        <span class="rag-pill">Retrieval</span>
+        <span class="rag-pill">Citations</span>
+      </div>
+      <div class="rag-grid">
+        <div class="rag-panel">
+          <h3>Documents</h3>
+          <div class="rag-kpi">{doc_count}</div>
+          <div class="rag-hint">Processed files available in your workspace.</div>
+        </div>
+        <div class="rag-panel">
+          <h3>Backend</h3>
+          <div class="rag-kpi">{'Connected' if backend_ok else 'Offline'}</div>
+          <div class="rag-hint">{API_BASE_URL}</div>
+        </div>
+        <div class="rag-panel">
+          <h3>Workspace</h3>
+          <div class="rag-kpi">{'Ready' if backend_ok else 'Start API'}</div>
+          <div class="rag-hint">Upload a PDF, wait for ingestion, then query with citations.</div>
+        </div>
+      </div>
+      <div class="rag-credit"><b>Built by Hassan Khan</b></div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
 with st.sidebar:
-    st.markdown("### Console")
-    st.caption("Workspace connectivity & configuration")
+    st.markdown("### Workspace Console")
+    st.caption("Connectivity & configuration")
     st.markdown(f"**API Base URL**\n\n`{API_BASE_URL}`")
-    st.markdown("---")
+
     if backend_ok:
         st.success("Backend connected")
     else:
         st.warning("Backend offline")
         st.code("uvicorn construction_rag.api.main:app --host 0.0.0.0 --port 8000")
+        if st.button("Retry connection", use_container_width=True):
+            st.rerun()
 
     st.markdown("---")
     st.markdown("### Environment")
