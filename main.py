@@ -1,39 +1,4 @@
-# from fastapi import FastAPI
-# from fastapi.middleware.cors import CORSMiddleware
-# import os
-# from routers import documents, queries, admin
-
-# # Create necessary directories
-# for directory in ['Uploads', 'Pages', 'Sample Text', 'Structured Text', 'Embeddings']:
-#     os.makedirs(directory, exist_ok=True)
-
-# app = FastAPI(
-#     title="Architecture Document RAG API",
-#     description="API for processing architectural documents and answering questions using RAG",
-#     version="1.0.0",
-# )
-
-# # Configure CORS
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],  # Adjust in production
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
-
-# # Include routers
-# app.include_router(documents.router, prefix="/api/documents", tags=["Documents"])
-# app.include_router(queries.router, prefix="/api/queries", tags=["Queries"])
-# app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
-
-# @app.get("/")
-# async def root():
-#     return {"message": "Architecture Document RAG API"}
-
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+from utils.database import init_db
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -41,6 +6,9 @@ import os
 from routers import documents, queries, admin
 
 # Create necessary directories if they don't already exist
+n# Initialize SQLite Database
+init_db()
+
 directories = ['Uploads', 'Pages', 'Sample Text', 'Structured Text', 'Embeddings']
 for directory in directories:
     os.makedirs(directory, exist_ok=True)
