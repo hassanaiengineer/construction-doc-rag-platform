@@ -18,7 +18,7 @@
 #         self.structured_text_dir = structured_text_dir
         
 #         # Path for Google Vision API credentials file
-#         self.google_vision_json_path = 'mid-construction-web-app-599ab6cb476e.json'
+#         self.google_vision_json_path = 'google-vision-credentials.json'
 
 #         # Create directories if they don't exist
 #         for directory in [upload_dir, pages_dir, sample_text_dir, structured_text_dir]:
@@ -146,7 +146,7 @@
 #         self.structured_text_dir = structured_text_dir
         
 #         # Path for Google Vision API credentials file
-#         self.google_vision_json_path = 'mid-construction-web-app-599ab6cb476e.json'
+#         self.google_vision_json_path = 'google-vision-credentials.json'
 
 #         # Create directories if they don't exist
 #         for directory in [upload_dir, pages_dir, sample_text_dir, structured_text_dir]:
@@ -280,7 +280,7 @@ class OCRProcessor:
         self.structured_text_dir = structured_text_dir
         
         # Path for Google Vision API credentials file
-        self.google_vision_json_path = 'mid-construction-web-app-599ab6cb476e.json'
+        self.google_vision_json_path = 'google-vision-credentials.json'
 
         # Create directories if they don't exist
         for directory in [upload_dir, pages_dir, sample_text_dir, structured_text_dir]:
