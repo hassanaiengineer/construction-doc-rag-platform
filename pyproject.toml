@@ -11,11 +11,9 @@ requires-python = ">=3.12"
 license = { text = "MIT" }
 authors = [{ name = "Hassan Khan" }]
 
-[tool.setuptools]
-package-dir = { "" = "src" }
-
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
+include = ["construction_rag*"]
 
 [tool.ruff]
 line-length = 100
