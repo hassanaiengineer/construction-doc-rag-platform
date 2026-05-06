@@ -1,6 +1,6 @@
 # Have used this concepts:
 
-1. Prompt E:
+1. Prompt Engineering
 
 
 2. RAG:
